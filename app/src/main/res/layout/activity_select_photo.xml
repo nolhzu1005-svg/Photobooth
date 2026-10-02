@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F3FB"
+    android:padding="24dp">
+
+    <!-- Top Header với Nút Quay Lại -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ẢNH ĐÃ CHỤP"
+        android:textColor="#867AFB"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn ảnh bạn thích"
+        android:textColor="#1E1B2E"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhấn vào ảnh để xem chi tiết."
+        android:textColor="#767389"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Danh sách Grid 2x2 ảnh -->
+
+    <GridView
+        android:id="@+id/gvPhotos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:horizontalSpacing="12dp"
+        android:numColumns="2"
+        android:verticalSpacing="12dp" />
+
+    <TextView
+        android:id="@+id/tvCountInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4 ảnh đã sẵn sàng"
+        android:textColor="#767389"
+        android:textSize="12sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Nút Bấm Chính: Tiếp tục tạo Strip -->
+    <Button
+        android:id="@+id/btnProceedFilter"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="TIẾP TỤC TẠO STRIP ➔"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:background="@drawable/bg_gradient_button" />
+
+    <!-- Nút Phụ: Chụp lại -->
+    <Button
+        android:id="@+id/btnRetake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Chụp lại"
+        android:textColor="#767389"
+        android:textSize="13sp"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

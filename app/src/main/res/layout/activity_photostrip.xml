@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F3FB"
+    android:padding="24dp">
+
+    <!-- Header Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TÙY BIẾN"
+        android:textColor="#867AFB"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.08" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm một chút vui"
+        android:textColor="#1E1B2E"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Photostrip Live Preview Card -->
+    <ImageView
+        android:id="@+id/imgStripResult"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="@drawable/bg_white_card"
+        android:scaleType="fitCenter"
+        android:padding="12dp" />
+
+    <!-- Sticker nổi bật Label -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sticker nổi bật"
+        android:textColor="#767389"
+        android:textSize="13sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Hàng Sticker Icons (✦, ♥, ☺, ☁) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/stkStar"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="✦"
+            android:textSize="22sp"
+            android:textColor="#1E1B2E"
+            android:gravity="center"
+            android:background="@drawable/bg_white_card"
+            android:layout_marginEnd="10dp"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/stkHeart"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="♥"
+            android:textSize="22sp"
+            android:textColor="#1E1B2E"
+            android:gravity="center"
+            android:background="@drawable/bg_white_card"
+            android:layout_marginEnd="10dp"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/stkSmile"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="☺"
+            android:textSize="22sp"
+            android:textColor="#1E1B2E"
+            android:gravity="center"
+            android:background="@drawable/bg_white_card"
+            android:layout_marginEnd="10dp"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/stkCloud"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="☁"
+            android:textSize="22sp"
+            android:textColor="#1E1B2E"
+            android:gravity="center"
+            android:background="@drawable/bg_white_card"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Button Xem Bản Hoàn Thiện -->
+    <Button
+        android:id="@+id/btnProceedExport"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="XEM BẢN HOÀN THIỆN ➔"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:background="@drawable/bg_gradient_button" />
+
+</LinearLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#F4F3FB"
+    android:padding="24dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/btnBackFrame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="← Sửa khung"
+            android:textColor="#867AFB"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:clickable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="XEM BẢN HOÀN THIỆN"
+            android:textColor="#867AFB"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bản hoàn thiện của bạn"
+        android:textColor="#1E1B2E"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Dải ảnh xem trước phóng to -->
+    <ImageView
+        android:id="@+id/imgFinalStrip"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_white_card"
+        android:scaleType="fitCenter"
+        android:padding="12dp"
+        android:elevation="4dp" />
+
+    <Button
+        android:id="@+id/btnGoToQr"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="XUẤT MÃ QR &amp; TẢI ẢNH ➔"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:background="@drawable/bg_gradient_button"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

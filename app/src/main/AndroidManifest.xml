@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 1. Quyền truy cập Camera để chụp ảnh -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <!-- 2. Quyền INTERNET để kết nối gửi/nhận ảnh với Flask Backend -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- 3. Quyền đọc/ghi bộ nhớ thiết bị -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="SnapVibe"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.PhotoBooth">
+
+        <!-- Màn hình 1: Trang chủ SnapVibe (Launcher) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Màn hình 2: Studio Chụp Ảnh CameraX -->
+        <activity
+            android:name=".CameraActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Màn hình 3: Chọn Ảnh Đã Chụp -->
+        <activity
+            android:name=".SelectPhotoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Màn hình 4: Bộ Lọc OpenCV & Mịn Da -->
+        <activity
+            android:name=".EditorActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Màn hình 5: Chọn Bố Cục & Khung Ảnh 2026 -->
+        <activity
+            android:name=".PhotostripActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Màn hình 6: Xuất Kết Quả & QR Code -->
+        <activity
+            android:name=".PreviewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Màn hình 7: Thư Viện Ảnh Đã Lưu -->
+        <activity
+            android:name=".GalleryActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+    </application>
+
+</manifest>

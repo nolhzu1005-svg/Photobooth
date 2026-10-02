@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F3FB"
+    android:padding="24dp">
+
+    <!-- Header Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="THƯ VIỆN CỦA BẠN"
+        android:textColor="#867AFB"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.08" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Photostrip đã lưu"
+        android:textColor="#1E1B2E"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:layout_marginTop="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Những khoảnh khắc gần đây ✦"
+        android:textColor="#767389"
+        android:textSize="13sp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Search Bar -->
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="⌕ Tìm kỷ niệm của bạn"
+        android:textColorHint="#94A3B8"
+        android:textColor="#1E1B2E"
+        android:textSize="14sp"
+        android:background="@drawable/bg_white_card"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Grid Danh Sách Photostrip Đã Lưu -->
+    <GridView
+        android:id="@+id/gvGallery"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="2"
+        android:horizontalSpacing="12dp"
+        android:verticalSpacing="12dp" />
+
+    <!-- Button Tạo Photobooth Mới -->
+    <Button
+        android:id="@+id/btnNewPhotobooth"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="✦ TẠO PHOTOBOOTH MỚI"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:background="@drawable/bg_gradient_button"
+        android:layout_marginTop="12dp" />
+
+</LinearLayout>
