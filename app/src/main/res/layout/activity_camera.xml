@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1E1B2E">
@@ -19,14 +20,14 @@
         android:layout_height="match_parent"
         android:layout_margin="20dp"
         android:layout_above="@id/bottomBar"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         app:cardCornerRadius="32dp"
         app:cardElevation="0dp">
 
         <androidx.camera.view.PreviewView
             android:id="@+id/viewFinder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:implementationMode="compatible" />
 
         <!-- Countdown Number Overlay -->
         <TextView
@@ -41,6 +42,18 @@
             android:textSize="54sp"
             android:textStyle="bold"
             android:visibility="gone" />
+
+        <!-- Nút chuyển đổi Camera Trước / Sau -->
+        <ImageButton
+            android:id="@+id/btnSwitchCamera"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            android:background="@drawable/circle_background"
+            android:src="@android:drawable/ic_menu_rotate"
+            android:contentDescription="Đổi Camera" />
+
     </androidx.cardview.widget.CardView>
 
     <!-- Bottom Controls Bar -->

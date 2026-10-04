@@ -5,12 +5,13 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="#F4F3FB"
-    android:padding="24dp">
+    android:padding="20dp">
 
+    <!-- Top Navigation Bar -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="8dp">
 
         <TextView
             android:id="@+id/btnBackFrame"
@@ -20,7 +21,8 @@
             android:textColor="#867AFB"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:clickable="true" />
+            android:clickable="true"
+            android:padding="4dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +31,8 @@
             android:text="XEM BẢN HOÀN THIỆN"
             android:textColor="#867AFB"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:padding="4dp" />
     </RelativeLayout>
 
     <TextView
@@ -39,28 +42,101 @@
         android:textColor="#1E1B2E"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="12dp" />
 
-    <!-- Dải ảnh xem trước phóng to -->
-    <ImageView
-        android:id="@+id/imgFinalStrip"
+    <!-- Mode Switcher Tabs: Photostrip vs GIF Boomerang -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_white_card"
+        android:padding="4dp"
+        android:layout_marginBottom="14dp">
+
+        <TextView
+            android:id="@+id/btnTabStrip"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="📸 PHOTOSTRIP"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_pill_active"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/btnTabGif"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="🎞️ ẢNH GIF ĐỘNG"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#767389"
+            android:background="@android:color/transparent"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <!-- Main Content Frame (Photostrip OR GIF) -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/bg_white_card"
-        android:scaleType="fitCenter"
-        android:padding="12dp"
-        android:elevation="4dp" />
+        android:elevation="4dp"
+        android:padding="12dp">
 
+        <!-- 1. Photostrip ImageView -->
+        <ImageView
+            android:id="@+id/imgFinalStrip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:visibility="visible" />
+
+        <!-- 2. GIF Boomerang Container -->
+        <FrameLayout
+            android:id="@+id/containerGif"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imgGifPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter" />
+
+            <!-- Live GIF Badge Indicator -->
+            <TextView
+                android:id="@+id/tvGifBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="● BOOMERANG GIF"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_pill_active"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:layout_gravity="top|start"
+                android:layout_margin="10dp" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <!-- Action Button to Show QR Code & Download -->
     <Button
         android:id="@+id/btnGoToQr"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="XUẤT MÃ QR &amp; TẢI ẢNH ➔"
+        android:text="📱 XUẤT MÃ QR &amp; TẢI ẢNH ➔"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="15sp"
         android:background="@drawable/bg_gradient_button"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>

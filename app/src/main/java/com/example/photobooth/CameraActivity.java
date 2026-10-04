@@ -3,13 +3,11 @@ package com.example.photobooth;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +23,6 @@ import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -38,54 +35,56 @@ public class CameraActivity extends AppCompatActivity {
     private TextView tvShotIndicator;
     private View flashOverlay;
     private Button btnCaptureShutter;
+    private ImageButton btnSwitchCamera;
 
     private ImageCapture imageCapture;
 
+    // Lưu đường dẫn file ảnh, không lưu Base64 để tránh lỗi quá dữ liệu Intent
     private final ArrayList<String> capturedPhotos = new ArrayList<>();
 
     private int currentShot = 0;
     private int targetShots = 4;
+    private int currentLensFacing = CameraSelector.LENS_FACING_FRONT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_camera);
 
-        // Nhận số lượng ảnh cần chụp
         targetShots = getIntent().getIntExtra("TARGET_SHOTS", 4);
 
-        // Ánh xạ View
         viewFinder = findViewById(R.id.viewFinder);
         tvCountdown = findViewById(R.id.tvCountdown);
         tvShotIndicator = findViewById(R.id.tvShotIndicator);
         flashOverlay = findViewById(R.id.flashOverlay);
         btnCaptureShutter = findViewById(R.id.btnCaptureShutter);
+        btnSwitchCamera = findViewById(R.id.btnSwitchCamera);
 
-        // Ban đầu chưa cho bấm nút chụp
         btnCaptureShutter.setEnabled(false);
 
-        // Bấm nút chụp
         btnCaptureShutter.setOnClickListener(v -> startShotSequence());
 
-        // Kiểm tra quyền camera
+        if (btnSwitchCamera != null) {
+            btnSwitchCamera.setOnClickListener(v -> {
+                currentLensFacing =
+                        currentLensFacing == CameraSelector.LENS_FACING_FRONT
+                                ? CameraSelector.LENS_FACING_BACK
+                                : CameraSelector.LENS_FACING_FRONT;
+
+                startCamera();
+            });
+        }
+
         requestCameraPermissionOrStart();
     }
 
-    /**
-     * Kiểm tra quyền Camera
-     */
     private void requestCameraPermissionOrStart() {
-
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED) {
-
             startCamera();
-
         } else {
-
             requestPermissions(
                     new String[]{Manifest.permission.CAMERA},
                     CAMERA_PERMISSION_REQUEST_CODE
@@ -93,30 +92,20 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Nhận kết quả cấp quyền Camera
-     */
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
             @NonNull String[] permissions,
             @NonNull int[] grantResults
     ) {
-
-        super.onRequestPermissionsResult(
-                requestCode,
-                permissions,
-                grantResults
-        );
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE
                 && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             startCamera();
-
         } else {
-
             Toast.makeText(
                     this,
                     "Bạn cần cấp quyền Camera để chụp ảnh",
@@ -125,82 +114,53 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Khởi động CameraX
-     */
     private void startCamera() {
-
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture =
                 ProcessCameraProvider.getInstance(this);
 
         cameraProviderFuture.addListener(() -> {
-
             try {
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
 
-                ProcessCameraProvider cameraProvider =
-                        cameraProviderFuture.get();
-
-                // ==============================
-                // PREVIEW
-                // ==============================
-
-                Preview preview =
-                        new Preview.Builder().build();
-
-                preview.setSurfaceProvider(
-                        viewFinder.getSurfaceProvider()
+                viewFinder.setImplementationMode(
+                        PreviewView.ImplementationMode.COMPATIBLE
                 );
 
-                // ==============================
-                // IMAGE CAPTURE
-                // ==============================
+                Preview preview = new Preview.Builder().build();
 
-                imageCapture =
-                        new ImageCapture.Builder().build();
+                preview.setSurfaceProvider(viewFinder.getSurfaceProvider());
 
-                // ==============================
-                // CHỌN CAMERA
-                // ==============================
+                imageCapture = new ImageCapture.Builder().build();
+
+                CameraSelector primarySelector =
+                        currentLensFacing == CameraSelector.LENS_FACING_FRONT
+                                ? CameraSelector.DEFAULT_FRONT_CAMERA
+                                : CameraSelector.DEFAULT_BACK_CAMERA;
+
+                CameraSelector fallbackSelector =
+                        currentLensFacing == CameraSelector.LENS_FACING_FRONT
+                                ? CameraSelector.DEFAULT_BACK_CAMERA
+                                : CameraSelector.DEFAULT_FRONT_CAMERA;
 
                 CameraSelector cameraSelector;
 
-                /*
-                 * Ưu tiên camera trước.
-                 *
-                 * Nếu Emulator không có camera trước
-                 * thì thử camera sau.
-                 */
-
-                if (cameraProvider.hasCamera(
-                        CameraSelector.DEFAULT_FRONT_CAMERA)) {
-
-                    cameraSelector =
-                            CameraSelector.DEFAULT_FRONT_CAMERA;
-
-                } else if (cameraProvider.hasCamera(
-                        CameraSelector.DEFAULT_BACK_CAMERA)) {
-
-                    cameraSelector =
-                            CameraSelector.DEFAULT_BACK_CAMERA;
-
+                if (cameraProvider.hasCamera(primarySelector)) {
+                    cameraSelector = primarySelector;
+                } else if (cameraProvider.hasCamera(fallbackSelector)) {
+                    cameraSelector = fallbackSelector;
                 } else {
-
                     btnCaptureShutter.setEnabled(false);
 
                     Toast.makeText(
                             CameraActivity.this,
-                            "Không tìm thấy camera trên Emulator. " +
-                                    "Hãy kiểm tra Webcam trong Device Manager.",
+                            "Không tìm thấy camera. Kiểm tra lại Webcam trong Device Manager.",
                             Toast.LENGTH_LONG
                     ).show();
-
                     return;
                 }
 
-                // Hủy camera cũ
                 cameraProvider.unbindAll();
 
-                // Kết nối CameraX
                 cameraProvider.bindToLifecycle(
                         CameraActivity.this,
                         cameraSelector,
@@ -208,7 +168,6 @@ public class CameraActivity extends AppCompatActivity {
                         imageCapture
                 );
 
-                // Camera đã sẵn sàng
                 btnCaptureShutter.setEnabled(true);
 
                 Toast.makeText(
@@ -218,7 +177,6 @@ public class CameraActivity extends AppCompatActivity {
                 ).show();
 
             } catch (Exception e) {
-
                 btnCaptureShutter.setEnabled(false);
 
                 Toast.makeText(
@@ -229,194 +187,94 @@ public class CameraActivity extends AppCompatActivity {
 
                 e.printStackTrace();
             }
-
         }, ContextCompat.getMainExecutor(this));
     }
 
-    /**
-     * Bắt đầu quá trình chụp nhiều ảnh
-     */
     private void startShotSequence() {
-
-        // Kiểm tra CameraX
         if (imageCapture == null) {
-
-            Toast.makeText(
-                    this,
-                    "Camera chưa sẵn sàng",
-                    Toast.LENGTH_SHORT
-            ).show();
-
+            Toast.makeText(this, "Camera chưa sẵn sàng", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Không cho bấm nút trong lúc đang chụp
         btnCaptureShutter.setEnabled(false);
 
-        // Xóa danh sách ảnh cũ
         capturedPhotos.clear();
-
-        // Đặt lại số thứ tự ảnh
         currentShot = 0;
 
-        // Bắt đầu chụp ảnh đầu tiên
         takeNextShot();
     }
 
-    /**
-     * Chụp từng ảnh một
-     */
     private void takeNextShot() {
-
-        // Nếu đã chụp đủ số lượng ảnh
+        // Đủ 4 ảnh: chuyển sang trang chọn ảnh
         if (currentShot >= targetShots) {
-
             Intent intent = new Intent(
                     CameraActivity.this,
                     SelectPhotoActivity.class
             );
 
-            intent.putStringArrayListExtra(
-                    "PHOTOS",
-                    capturedPhotos
-            );
-
+            intent.putStringArrayListExtra("PHOTOS", capturedPhotos);
             startActivity(intent);
-
             finish();
-
             return;
         }
 
-        // Tăng số thứ tự ảnh
         currentShot++;
 
-        // Hiển thị số ảnh
         tvShotIndicator.setText(
                 "CHỤP " + currentShot + " / " + targetShots
         );
 
-        // Hiển thị đếm ngược
         tvCountdown.setVisibility(View.VISIBLE);
 
-        // Đếm ngược 3 giây
         new CountDownTimer(3000, 1000) {
-
             @Override
             public void onTick(long millisUntilFinished) {
-
-                int seconds =
-                        (int) (millisUntilFinished / 1000) + 1;
-
-                tvCountdown.setText(
-                        String.valueOf(seconds)
-                );
+                int seconds = (int) (millisUntilFinished / 1000) + 1;
+                tvCountdown.setText(String.valueOf(seconds));
             }
 
             @Override
             public void onFinish() {
-
                 tvCountdown.setVisibility(View.GONE);
 
-                // Hiệu ứng flash
                 if (flashOverlay != null) {
-
                     flashOverlay.setAlpha(0.95f);
-
-                    flashOverlay
-                            .animate()
+                    flashOverlay.animate()
                             .alpha(0f)
                             .setDuration(200)
                             .start();
                 }
 
-                // Chụp ảnh
                 capturePhoto();
             }
-
         }.start();
     }
 
-    /**
-     * Chụp và lưu ảnh
-     */
     private void capturePhoto() {
-
         if (imageCapture == null) {
             return;
         }
 
-        // Tạo file ảnh
         File photoFile = new File(
                 getExternalFilesDir(null),
-                "shot_" +
-                        System.currentTimeMillis() +
-                        ".jpg"
+                "shot_" + System.currentTimeMillis() + ".jpg"
         );
 
-        // Cấu hình nơi lưu ảnh
         ImageCapture.OutputFileOptions outputOptions =
-                new ImageCapture.OutputFileOptions.Builder(
-                        photoFile
-                ).build();
+                new ImageCapture.OutputFileOptions.Builder(photoFile).build();
 
-        // Tiến hành chụp
         imageCapture.takePicture(
                 outputOptions,
                 ContextCompat.getMainExecutor(this),
-
                 new ImageCapture.OnImageSavedCallback() {
-
                     @Override
                     public void onImageSaved(
                             @NonNull ImageCapture.OutputFileResults outputFileResults
                     ) {
+                        // Chỉ lưu đường dẫn file ảnh: dữ liệu rất nhỏ và ổn định.
+                        capturedPhotos.add(photoFile.getAbsolutePath());
 
-                        // Đọc ảnh vừa chụp
-                        Bitmap bitmap =
-                                BitmapFactory.decodeFile(
-                                        photoFile.getAbsolutePath()
-                                );
-
-                        if (bitmap == null) {
-
-                            btnCaptureShutter.setEnabled(true);
-
-                            Toast.makeText(
-                                    CameraActivity.this,
-                                    "Không đọc được ảnh vừa chụp",
-                                    Toast.LENGTH_SHORT
-                            ).show();
-
-                            return;
-                        }
-
-                        // Chuyển Bitmap thành byte[]
-                        ByteArrayOutputStream baos =
-                                new ByteArrayOutputStream();
-
-                        bitmap.compress(
-                                Bitmap.CompressFormat.JPEG,
-                                85,
-                                baos
-                        );
-
-                        // Chuyển thành Base64
-                        String b64 =
-                                Base64.encodeToString(
-                                        baos.toByteArray(),
-                                        Base64.NO_WRAP
-                                );
-
-                        // Lưu ảnh vào danh sách
-                        capturedPhotos.add(
-                                "data:image/jpeg;base64," + b64
-                        );
-
-                        // Giải phóng Bitmap
-                        bitmap.recycle();
-
-                        // Chụp ảnh tiếp theo
+                        // Chụp tiếp hoặc tự chuyển SelectPhotoActivity khi đủ 4 ảnh.
                         takeNextShot();
                     }
 
@@ -424,13 +282,11 @@ public class CameraActivity extends AppCompatActivity {
                     public void onError(
                             @NonNull ImageCaptureException exception
                     ) {
-
                         btnCaptureShutter.setEnabled(true);
 
                         Toast.makeText(
                                 CameraActivity.this,
-                                "Chụp ảnh thất bại: " +
-                                        exception.getMessage(),
+                                "Chụp ảnh thất bại: " + exception.getMessage(),
                                 Toast.LENGTH_LONG
                         ).show();
                     }

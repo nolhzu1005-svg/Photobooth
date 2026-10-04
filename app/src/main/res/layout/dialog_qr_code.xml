@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_white_card"
+    android:padding="24dp">
+
+    <!-- Header Icon & Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MÃ QR CHIA SẺ ✦"
+        android:textColor="#867AFB"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.08" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quét để tải ảnh về máy"
+        android:textColor="#1E1B2E"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mở ứng dụng Camera trên điện thoại để quét và lưu kỷ niệm của bạn."
+        android:textColor="#767389"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- QR Code Image -->
+    <FrameLayout
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:background="@drawable/bg_white_card"
+        android:elevation="3dp"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/ivQrCodeDialog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter" />
+
+        <ProgressBar
+            android:id="@+id/pbQrLoading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="#867AFB" />
+    </FrameLayout>
+
+    <!-- Save to Device Button -->
+    <Button
+        android:id="@+id/btnDialogSave"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="📥 LƯU VÀO BỘ SƯU TẬP"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:background="@drawable/bg_gradient_button"
+        android:layout_marginTop="20dp" />
+
+    <!-- Go to Gallery Button -->
+    <Button
+        android:id="@+id/btnDialogGallery"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="📁 MỞ THƯ VIỆN PHOTOBOOTH"
+        android:textColor="#867AFB"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        android:background="@drawable/bg_white_card"
+        android:layout_marginTop="8dp" />
+
+    <!-- Close Button -->
+    <TextView
+        android:id="@+id/btnDialogClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đóng"
+        android:textColor="#94A3B8"
+        android:textSize="14sp"
+        android:clickable="true"
+        android:padding="8dp"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>
